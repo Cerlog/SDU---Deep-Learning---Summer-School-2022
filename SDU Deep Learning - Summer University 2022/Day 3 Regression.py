@@ -39,3 +39,6 @@ results = mod.fit()
 
 print(results.params)
 print(results.summary())
+print(results.cov_params())
+fig = sm.graphics.plot_partregress_grid(results)
+fig.tight_layout(pad=1.0)
