@@ -1,4 +1,4 @@
-Course Description
+## Course Description
 
 Machine learning has become a part in our everydays life, from simple product recommendations to personal electronic assistant to self-driving cars. More recently, through the advent of potent hardware and cheap computational power, “Deep Learning” has become a popular and powerful tool for learning from complex, large-scale data.
 
@@ -6,7 +6,7 @@ In this course, we will discuss the fundamentals of deep learning and its applic
 
 Mainly, the course will cover practical as well theoretical aspects of the Deep Learning and also gives a broad general introduction to machine learning and statistical learning in general.
 
-Materials
+## Materials
 
 The students should bring:
 
@@ -15,5 +15,7 @@ We will form teams and work on the practical parts of the course together, so ev
 Reading Material (please note that the books cover the stuff in more detail than needed for the course):
 
 All lecture slides will be uploaded before the lecture.
-The Deep Learning Book (Part I & Part II) (short: DLB)
-An Introduction to Statistical Learning (Chapters 1-3) (short: ITSL)
+
+<a href="https://www.deeplearningbook.org/" target="_blank">The Deep Learning Book (Part I & Part II)</a>
+<a href="https://faculty.marshall.usc.edu/gareth-james/" target="_blank">An Introduction to Statistical Learning (Chapters 1-3) (short: ITSL)</a>
+
