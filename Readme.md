@@ -16,6 +16,8 @@ Reading Material (please note that the books cover the stuff in more detail than
 
 All lecture slides will be uploaded before the lecture.
 
-<a href="https://www.deeplearningbook.org/" target="_blank">The Deep Learning Book (Part I & Part II)</a>
+<a href="https://www.deeplearningbook.org/" target="_blank">The Deep Learning Book (Part I & Part II)</a> 
+
+
 <a href="https://faculty.marshall.usc.edu/gareth-james/" target="_blank">An Introduction to Statistical Learning (Chapters 1-3) (short: ITSL)</a>
 
