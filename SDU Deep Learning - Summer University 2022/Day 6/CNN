@@ -1,0 +1,122 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Aug 15 13:12:35 2022
+
+@author: baeks
+"""
+
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.utils import to_categorical
+from tensorflow.keras import layers
+from tensorflow.keras import regularizers
+import seaborn as sns
+import matplotlib.pyplot as plt
+import tensorflow as tf
+from tensorflow.keras import optimizers
+import numpy as np
+
+# Loads the data
+(train_data, train_labels), (test_data, test_labels) = mnist.load_data()
+
+# Plots a single digit from the data
+
+sns.heatmap(train_data[1, :, :])
+
+plt.show()
+
+num_classes = 10
+train_labels = to_categorical(train_labels, num_classes)
+test_labels = to_categorical(test_labels, num_classes)
+
+train_data = train_data/255
+test_data = test_data/255
+
+train_data = np.expand_dims(train_data, -1)
+test_data = np.expand_dims(test_data, -1)
+
+#%%
+
+model = tf.keras.Sequential()
+model.add(layers.InputLayer(input_shape=(28,28,1)))
+model.add(layers.Dropout(0.2))
+model.add(layers.Conv2D(32, (5, 5), activation='relu'))
+model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Conv2D(64, (3, 3), activation='relu', use_bias=True, kernel_regularizer=regularizers.L2(0.0015)))
+                        
+model.add(layers.Flatten())
+model.add(layers.Dense(64, activation='relu'))
+model.add(layers.Dense(32, activation='relu', use_bias=True, bias_regularizer='L2'))
+model.add(layers.Dense(10, activation='softmax'))
+
+model.compile(optimizer='nadam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+
+
+model.summary()
+
+for i in range(3):
+    kernels = model.layers[1].get_weights()[0][:, :, 0, :]
+    sns.heatmap(kernels[:, :,i])
+    plt.show()
+    
+history = model.fit(train_data, train_labels, epochs = 10, batch_size = 64, validation_data=(test_data, test_labels))
+
+for i in range(3):
+    kernels = model.layers[1].get_weights()[0][:, :, 0, :]
+    sns.heatmap(kernels[:, :,i])
+    plt.show()
+    
+history_dict = history.history
+history_dict.keys()
+
+history_dict = history.history
+loss_values = history_dict['loss']
+val_loss_values = history_dict['val_loss']
+
+epochs = range(1, len(loss_values) + 1)
+
+#’bo’ is for blue dot, ‘b’ is for solid blue line
+plt.plot(epochs, loss_values, 'bo', label='Training loss')
+plt.plot(epochs, val_loss_values, 'b', label='Validation loss')
+plt.title('Training and validation loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+
+plt.show()
+
+
+#%%
+predictions = model.predict(test_data)
+predictions = predictions.argmax(axis=-1)
+test_labels_int = test_labels.argmax(axis=-1)
+
+wrong_data = test_data[test_labels_int != predictions]
+wrong_data = np.squeeze(wrong_data,axis=3)
+wrong_preds = list(predictions[test_labels_int != predictions])
+
+for i in range(4):
+    sns.heatmap(wrong_data[i, :, :])
+    plt.title('predicted label:'+str(wrong_preds[i]))
+    plt.show()
+
+
+#%%
+for i in range(16):
+    kernels = model.layers[1].get_weights()[0][:, :, 0, :]
+    sns.heatmap(kernels[:, :,i])
+    plt.show()
+
+from tensorflow.keras.models import Model
+
+layer_outputs = [layer.output for layer in model.layers]
+activation_model = Model(inputs=model.input, outputs=layer_outputs[0])
+
+for i in range(4):
+    activations = activation_model.predict(train_data[i].reshape(1,28,28,1))
+    for i in range(8):
+       sns.heatmap(activations[0, :, :,i])
+       plt.show()
+
